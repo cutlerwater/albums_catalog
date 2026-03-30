@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { prisma } from "../../../lib/prisma";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function AlbumDetailPage({ params }: Props) {
-  const { id } = params;
+  const { id } = await params;
 
   const album = await prisma.album.findUnique({
     where: { id },
@@ -16,14 +17,7 @@ export default async function AlbumDetailPage({ params }: Props) {
   });
 
   if (!album) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-4">Album Not Found</h1>
-        <Link href="/" className="text-blue-500 underline">
-          Back to Catalog
-        </Link>
-      </div>
-    );
+    notFound();
   }
 
   return (
