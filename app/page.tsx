@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [albums, setAlbums] = useState<any[]>([]);
@@ -268,67 +269,66 @@ export default function Home() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {filtered.map((album) => (
-          <div
-            key={album.id}
-            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg hover:scale-105 transition transform"
-          >
-            <div className="relative group">
-              {album.image ? (
-                <img
-                  src={album.image}
-                  className="w-full h-40 object-cover rounded-lg"
-                  alt={album.title}
-                />
-              ) : (
-                <div className="w-full h-40 rounded-lg bg-gray-200 flex items-center justify-center">
-                  No Cover
-                </div>
-              )}
-
-              <div className="absolute inset-0 bg-blue bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition rounded-lg">
-                <span className="text-white font-bold text-lg">Edit</span>
-              </div>
-            </div>
-
-            <h2 className="font-bold text-lg mt-3">{album.title}</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-300">
-              {album.performers}
-            </p>
-            
-            <p className="text-xs text-gray-400">
-              {album.year} • {album.songs.length} songs
-            </p>
-
-            {/* 👇 ADD THIS RIGHT HERE */}
-            {album.songs && album.songs.length > 0 && (
-              <div className="mt-3 border-t pt-2">
-                <p className="text-xs text-gray-400 mb-1">Songs:</p>
-                {album.songs.map((song: any) => (
-                  <p key={song.id} className="text-sm">
-                    🎵 {song.title}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            <div className="flex gap-2 mt-3">
-              <button
-                onClick={() => startEdit(album)}
-                className="flex-1 bg-blue-500 text-white px-2 py-1 rounded"
-              >
-                Edit
-              </button>
-
-              <button
-                onClick={() => deleteAlbum(album.id)}
-                className="flex-1 bg-red-500 text-white px-2 py-1 rounded"
-              >
-                Delete
-              </button>
-
-            </div>
+  <div
+    key={album.id}
+    className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg hover:scale-105 transition transform"
+  >
+    <Link href={`/albums/${album.id}`}>
+      <div className="relative group cursor-pointer">
+        {album.image ? (
+          <img
+            src={album.image}
+            className="w-full h-40 object-cover rounded-lg"
+            alt={album.title}
+          />
+        ) : (
+          <div className="w-full h-40 rounded-lg bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+            No Cover
           </div>
+        )}
+
+        <div className="absolute inset-0 bg-blue bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition rounded-lg">
+          <span className="text-white font-bold text-lg">View Album</span>
+        </div>
+      </div>
+
+      <h2 className="font-bold text-lg mt-3">{album.title}</h2>
+      <p className="text-sm text-gray-500 dark:text-gray-300">
+        {album.performers}
+      </p>
+      <p className="text-xs text-gray-400">
+        {album.year} • {album.songs.length} songs
+      </p>
+    </Link>
+
+    {album.songs && album.songs.length > 0 && (
+      <div className="mt-3 border-t pt-2">
+        <p className="text-xs text-gray-400 mb-1">Songs:</p>
+        {album.songs.map((song: any) => (
+          <p key={song.id} className="text-sm">
+            🎵 {song.title}
+          </p>
         ))}
+      </div>
+    )}
+
+    <div className="flex gap-2 mt-3">
+      <button
+        onClick={() => startEdit(album)}
+        className="flex-1 bg-blue-500 text-white px-2 py-1 rounded"
+      >
+        Edit
+      </button>
+
+      <button
+        onClick={() => deleteAlbum(album.id)}
+        className="flex-1 bg-red-500 text-white px-2 py-1 rounded"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+))}
       </div>
     </div>
   );
