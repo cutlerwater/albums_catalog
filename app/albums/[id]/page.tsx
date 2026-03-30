@@ -2,11 +2,11 @@ import Link from "next/link";
 import { prisma } from "../../../lib/prisma";
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 };
 
 export default async function AlbumDetailPage({ params }: Props) {
-  const { id } = await params;
+  const { id } = params;
 
   const album = await prisma.album.findUnique({
     where: { id },
