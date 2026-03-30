@@ -4,7 +4,9 @@ import { prisma } from "../../../lib/prisma";
 export async function GET() {
   try {
     const albums = await prisma.album.findMany({
-  orderBy: { createdAt: "desc" },
+  orderBy: {
+    year: "desc", // newest first
+  },
   include: {
     songs: true,
   },
