@@ -239,11 +239,17 @@ export default function Home() {
             className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg hover:scale-105 transition transform"
           >
             <div className="relative group">
-              <img
-                src={album.image || "/placeholder.png"}
-                className="w-full h-40 object-cover rounded-lg"
-                alt={album.title}
-              />
+              {album.image ? (
+                <img
+                  src={album.image}
+                  className="w-full h-40 object-cover rounded-lg"
+                  alt={album.title}
+                />
+              ) : (
+                <div className="w-full h-40 rounded-lg bg-gray-200 flex items-center justify-center">
+                  No Cover
+                </div>
+              )}
 
               <div className="absolute inset-0 bg-blue bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition rounded-lg">
                 <span className="text-white font-bold text-lg">Edit</span>
@@ -254,6 +260,7 @@ export default function Home() {
             <p className="text-sm text-gray-500 dark:text-gray-300">
               {album.performers}
             </p>
+            <p className="text-xs break-all mt-2">{album.image}</p>
             <p className="text-xs text-gray-400">
               {album.year} • {album.songs.length} songs
             </p>
