@@ -176,7 +176,6 @@ export default function Home() {
               });
 
               const data = await res.json();
-              console.log("UPLOAD RESPONSE:", data);
 
               if (!res.ok) {
                 console.error("Upload failed:", data);
@@ -260,7 +259,7 @@ export default function Home() {
             <p className="text-sm text-gray-500 dark:text-gray-300">
               {album.performers}
             </p>
-            <p className="text-xs break-all mt-2">{album.image}</p>
+            
             <p className="text-xs text-gray-400">
               {album.year} • {album.songs.length} songs
             </p>
