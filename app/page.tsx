@@ -14,10 +14,24 @@ export default function Home() {
     length: "",
     image: "",  });
 
+    
+
   const [search, setSearch] = useState("");
   const [dark, setDark] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("year-desc");
+
+  const [songs, setSongs] = useState<any[]>([]);
+  const [songForm, setSongForm] = useState({
+    title: "",
+    performers: "",
+    year: "",
+    singers: "",
+    writers: "",
+    length: "",
+    albumId: "",
+  });
+  const [editSongId, setEditSongId] = useState<string | null>(null);
 
   const fetchAlbums = async () => {
     try {
@@ -39,6 +53,90 @@ export default function Home() {
   useEffect(() => {
     fetchAlbums();
   }, []);
+
+  const fetchSongs = async () => {
+      try {
+        const res = await fetch("/api/songs");
+
+        if (!res.ok) {
+          const text = await res.text();
+          console.error("GET /api/songs failed:", text);
+          return;
+        }
+
+        const data = await res.json();
+        setSongs(data);
+      } catch (error) {
+        console.error("fetchSongs error:", error);
+      }
+    };
+
+    useEffect(() => {
+      fetchAlbums();
+      fetchSongs();
+    }, []);
+
+    const saveSong = async () => {
+    const method = editSongId ? "PUT" : "POST";
+    const body = editSongId ? { id: editSongId, ...songForm } : songForm;
+
+    const res = await fetch("/api/songs", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Save song failed:", text);
+      return;
+    }
+
+    setSongForm({
+      title: "",
+      performers: "",
+      year: "",
+      singers: "",
+      writers: "",
+      length: "",
+      albumId: "",
+    });
+
+    setEditSongId(null);
+    await fetchSongs();
+    await fetchAlbums();
+  };
+
+  const startSongEdit = (song: any) => {
+      setSongForm({
+        title: song.title || "",
+        performers: song.performers || "",
+        year: song.year || "",
+        singers: song.singers || "",
+        writers: song.writers || "",
+        length: song.length || "",
+        albumId: song.albumId || "",
+      });
+
+      setEditSongId(song.id);
+    };
+
+  const deleteSong = async (id: string) => {
+      const res = await fetch("/api/songs", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Delete song failed:", text);
+        return;
+      }
+
+      await fetchSongs();
+      await fetchAlbums();
+    };
 
     const testCreateSong = async () => {
     const res = await fetch("/api/songs", {
@@ -148,6 +246,8 @@ export default function Home() {
     }
   });
 
+  
+
   return (
     <div className={dark ? "bg-gray-900 text-white min-h-screen p-6" : "p-6"}>
       <h1 className="text-3xl font-bold mb-4">🔥🎶 My Album Catalog</h1>
@@ -179,6 +279,8 @@ export default function Home() {
             />
           ))}
         </div>
+
+        
 
         <div className="mt-4">
           <input
@@ -246,6 +348,68 @@ export default function Home() {
         )}
       </div>
 
+      <div className="mt-10">
+  <h2 className="text-2xl font-bold mb-4">🎵 Manage Songs</h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+    {["title", "performers", "year", "singers", "writers", "length"].map((key) => (
+      <input
+        key={key}
+        value={(songForm as any)[key]}
+        placeholder={key}
+        className="border p-2 rounded text-blue"
+        onChange={(e) =>
+          setSongForm({ ...songForm, [key]: e.target.value })
+        }
+      />
+    ))}
+
+    <select
+      value={songForm.albumId}
+      onChange={(e) =>
+        setSongForm({ ...songForm, albumId: e.target.value })
+      }
+      className="border p-2 rounded text-blue"
+    >
+      <option value="">No Album</option>
+      {albums.map((album) => (
+        <option key={album.id} value={album.id}>
+          {album.title}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div className="flex gap-2 mb-6">
+    <button
+      onClick={saveSong}
+      className="bg-purple-600 text-white px-4 py-2 rounded"
+    >
+      {editSongId ? "Update Song" : "Add Song"}
+    </button>
+
+    {editSongId && (
+      <button
+        onClick={() => {
+          setEditSongId(null);
+          setSongForm({
+            title: "",
+            performers: "",
+            year: "",
+            singers: "",
+            writers: "",
+            length: "",
+            albumId: "",
+          });
+        }}
+        className="bg-gray-500 text-white px-4 py-2 rounded"
+      >
+        Cancel
+      </button>
+    )}
+  </div>
+</div>
+
       <div className="mb-4 flex gap-2">
   <input
     placeholder="Search..."
@@ -305,10 +469,26 @@ export default function Home() {
       <div className="mt-3 border-t pt-2">
         <p className="text-xs text-gray-400 mb-1">Songs:</p>
         {album.songs.map((song: any) => (
-          <p key={song.id} className="text-sm">
-            🎵 {song.title}
-          </p>
-        ))}
+  <div key={song.id} className="flex items-center justify-between gap-2 mb-1">
+    <p className="text-sm">🎵 {song.title}</p>
+
+    <div className="flex gap-1">
+      <button
+        onClick={() => startSongEdit(song)}
+        className="text-xs bg-purple-500 text-white px-2 py-1 rounded"
+      >
+        Edit
+      </button>
+
+      <button
+        onClick={() => deleteSong(song.id)}
+        className="text-xs bg-red-500 text-white px-2 py-1 rounded"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+))}
       </div>
     )}
 
