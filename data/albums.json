@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Dark Side of the Moon",
+    "performers": "Pink Floyd",
+    "year": "1973",
+    "singers": "Roger Waters, David Gilmour, Richard Wright, Clare Torry",
+    "writers": "Roger Waters, David Gilmour, Richard Wright, Nick Mason, Clare Torry",
+    "length": "43:11",
+    "amountofsongs": "9",
+    "image": "/uploads/1774752046762-DarkSide.jpg"
+  },
+  {
+    "title": "Animals",
+    "performers": "Pink Floyd",
+    "year": "1977",
+    "singers": "Roger Waters",
+    "writers": "Roger Waters, David Gilmour, Richard Wright, Nick Mason",
+    "length": "41:40",
+    "amountofsongs": "5",
+    "image": "/uploads/1774833072551-Animals.jpg"
+  },
+  {
+    "title": "Wish You Were Here",
+    "performers": "Pink Floyd",
+    "year": "1975",
+    "singers": "Roger Waters, David Gilmour",
+    "writers": "Roger Waters, David Gilmour, Richard Wright, Nick Mason",
+    "length": "44:05",
+    "amountofsongs": "5",
+    "image": "/uploads/1774833276899-WishYouWereHere.jpg"
+  },
+  {
+    "title": "Meddle",
+    "performers": "Pink Floyd",
+    "year": "1971",
+    "singers": "Waters",
+    "writers": "Gilmour",
+    "length": "45:00",
+    "amountofsongs": "6",
+    "image": "/uploads/1774833778593-Echos.jpg"
+  },
+  {
+    "title": "Atom Heart Mother",
+    "performers": "Pink Floyd",
+    "year": "1970",
+    "singers": "Roger Waters",
+    "writers": "Roger Waters",
+    "length": "46:00",
+    "amountofsongs": "5",
+    "image": "/uploads/1774834578572-AtomHeartMotherCover.jpeg"
+  },
+  {
+    "title": "The Wall",
+    "performers": "Pink Floyd",
+    "year": "1979",
+    "singers": "Roger Waters, David Gilmour, Richard Wright",
+    "writers": "Roger Waters, David Gilmour, Richard Wright, Nick Mason",
+    "length": "80:42",
+    "amountofsongs": "26",
+    "image": "/uploads/1774834760828-Wall.jpg"
+  }
+]
