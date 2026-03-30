@@ -106,19 +106,18 @@ export default function Home() {
   };
 
   const startEdit = (album: any) => {
-    setForm({
-      title: album.title,
-      performers: album.performers,
-      year: album.year,
-      singers: album.singers,
-      writers: album.writers,
-      length: album.length,
-      amountOfSongs: album.amountOfSongs?.toString() || "",
-      image: album.image || "",
-    });
+  setForm({
+    title: album.title,
+    performers: album.performers,
+    year: album.year,
+    singers: album.singers,
+    writers: album.writers,
+    length: album.length,
+    image: album.image || "",
+  });
 
-    setEditId(album.id);
-  };
+  setEditId(album.id);
+};
 
   const filtered = albums.filter((s: any) =>
     Object.values(s).some((v) =>
