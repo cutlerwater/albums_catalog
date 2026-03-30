@@ -1384,6 +1384,7 @@ export type AlbumCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * The data used to create many Albums.
    */
   data: Prisma.AlbumCreateManyInput | Prisma.AlbumCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1402,6 +1403,7 @@ export type AlbumCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * The data used to create many Albums.
    */
   data: Prisma.AlbumCreateManyInput | Prisma.AlbumCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**

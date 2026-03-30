@@ -500,6 +500,7 @@ export type SongCreateOrConnectWithoutAlbumInput = {
 
 export type SongCreateManyAlbumInputEnvelope = {
   data: Prisma.SongCreateManyAlbumInput | Prisma.SongCreateManyAlbumInput[]
+  skipDuplicates?: boolean
 }
 
 export type SongUpsertWithWhereUniqueWithoutAlbumInput = {
@@ -1334,6 +1335,7 @@ export type SongCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Songs.
    */
   data: Prisma.SongCreateManyInput | Prisma.SongCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1352,6 +1354,7 @@ export type SongCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Songs.
    */
   data: Prisma.SongCreateManyInput | Prisma.SongCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
