@@ -50,9 +50,7 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    fetchAlbums();
-  }, []);
+  
 
   const fetchSongs = async () => {
       try {
@@ -108,60 +106,40 @@ export default function Home() {
   };
 
   const startSongEdit = (song: any) => {
-      setSongForm({
-        title: song.title || "",
-        performers: song.performers || "",
-        year: song.year || "",
-        singers: song.singers || "",
-        writers: song.writers || "",
-        length: song.length || "",
-        albumId: song.albumId || "",
-      });
+  setSongForm({
+    title: song.title || "",
+    performers: song.performers || "",
+    year: song.year || "",
+    singers: song.singers || "",
+    writers: song.writers || "",
+    length: song.length || "",
+    albumId: song.albumId || "",
+  });
 
-      setEditSongId(song.id);
-    };
+  setEditSongId(song.id);
+};
 
-  const deleteSong = async (id: string) => {
-      const res = await fetch("/api/songs", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
+const deleteSong = async (id: string) => {
+  const res = await fetch("/api/songs", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id }),
+  });
 
-      if (!res.ok) {
-        const text = await res.text();
-        console.error("Delete song failed:", text);
-        return;
-      }
+  if (!res.ok) {
+    const text = await res.text();
+    console.error("Delete song failed:", text);
+    return;
+  }
 
-      await fetchSongs();
-      await fetchAlbums();
-    };
+  await fetchSongs();
+  await fetchAlbums();
+};
 
-    const testCreateSong = async () => {
-    const res = await fetch("/api/songs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: "Test Song",
-        performers: "Test Artist",
-        year: "2024",
-        singers: "Test Singer",
-        writers: "Test Writer",
-        length: "3:45",
-        albumId: null,
-      }),
-    });
-
-    const data = await res.json();
-    console.log("Created song:", data);
-  };
-
-  const saveAlbum = async () => {
+const saveAlbum = async () => {
   const method = editId ? "PUT" : "POST";
   const body = editId ? { id: editId, ...form } : form;
 
-  // 👇 PUT IT HERE
   console.log("Saving album with body:", body);
 
   const res = await fetch("/api/albums", {
@@ -249,7 +227,8 @@ export default function Home() {
   
 
   return (
-    <div className={dark ? "bg-gray-900 text-white min-h-screen p-6" : "p-6"}>
+  <div className={dark ? "bg-gray-900 text-white min-h-screen" : "bg-gray-100 min-h-screen"}>
+    <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">🔥🎶 My Album Catalog</h1>
 
       <button
@@ -259,17 +238,9 @@ export default function Home() {
         Toggle Dark Mode
       </button>
 
-
       <div className="mb-4">
         <div className="grid grid-cols-5 gap-2">
-          {[
-            "title",
-            "performers",
-            "year",
-            "singers",
-            "writers",
-            "length",
-            ].map((key) => (
+          {["title", "performers", "year", "singers", "writers", "length"].map((key) => (
             <input
               key={key}
               value={(form as any)[key]}
@@ -279,8 +250,6 @@ export default function Home() {
             />
           ))}
         </div>
-
-        
 
         <div className="mt-4">
           <input
@@ -349,167 +318,170 @@ export default function Home() {
       </div>
 
       <div className="mt-10">
-  <h2 className="text-2xl font-bold mb-4">🎵 Manage Songs</h2>
+        <h2 className="text-2xl font-bold mb-4">🎵 Manage Songs</h2>
 
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
-    {["title", "performers", "year", "singers", "writers", "length"].map((key) => (
-      <input
-        key={key}
-        value={(songForm as any)[key]}
-        placeholder={key}
-        className="border p-2 rounded text-blue"
-        onChange={(e) =>
-          setSongForm({ ...songForm, [key]: e.target.value })
-        }
-      />
-    ))}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+          {["title", "performers", "year", "singers", "writers", "length"].map((key) => (
+            <input
+              key={key}
+              value={(songForm as any)[key]}
+              placeholder={key}
+              className="border p-2 rounded text-blue"
+              onChange={(e) => setSongForm({ ...songForm, [key]: e.target.value })}
+            />
+          ))}
 
-    <select
-      value={songForm.albumId}
-      onChange={(e) =>
-        setSongForm({ ...songForm, albumId: e.target.value })
-      }
-      className="border p-2 rounded text-blue"
-    >
-      <option value="">No Album</option>
-      {albums.map((album) => (
-        <option key={album.id} value={album.id}>
-          {album.title}
-        </option>
-      ))}
-    </select>
-  </div>
+          <select
+            value={songForm.albumId}
+            onChange={(e) => setSongForm({ ...songForm, albumId: e.target.value })}
+            className="border p-2 rounded text-blue"
+          >
+            <option value="">No Album</option>
+            {albums.map((album) => (
+              <option key={album.id} value={album.id}>
+                {album.title}
+              </option>
+            ))}
+          </select>
+        </div>
 
-  <div className="flex gap-2 mb-6">
-    <button
-      onClick={saveSong}
-      className="bg-purple-600 text-white px-4 py-2 rounded"
-    >
-      {editSongId ? "Update Song" : "Add Song"}
-    </button>
+        <div className="flex gap-2 mb-6">
+          <button
+            onClick={saveSong}
+            className="bg-purple-600 text-white px-4 py-2 rounded"
+          >
+            {editSongId ? "Update Song" : "Add Song"}
+          </button>
 
-    {editSongId && (
-      <button
-        onClick={() => {
-          setEditSongId(null);
-          setSongForm({
-            title: "",
-            performers: "",
-            year: "",
-            singers: "",
-            writers: "",
-            length: "",
-            albumId: "",
-          });
-        }}
-        className="bg-gray-500 text-white px-4 py-2 rounded"
-      >
-        Cancel
-      </button>
-    )}
-  </div>
-</div>
-
-      <div className="mb-4 flex gap-2">
-  <input
-    placeholder="Search..."
-    className="border p-2 w-full text-blue"
-    onChange={(e) => setSearch(e.target.value)}
-  />
-
-  <select
-    value={sortBy}
-    onChange={(e) => setSortBy(e.target.value)}
-    className="border p-2 rounded text-blue"
-  >
-    <option value="year-desc">Year: Newest</option>
-    <option value="year-asc">Year: Oldest</option>
-    <option value="title-asc">Title: A-Z</option>
-    <option value="title-desc">Title: Z-A</option>
-    <option value="performers-asc">Artist: A-Z</option>
-    <option value="performers-desc">Artist: Z-A</option>
-  </select>
-</div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-        {filtered.map((album) => (
-  <div
-    key={album.id}
-    className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg hover:scale-105 transition transform"
-  >
-    <Link href={`/albums/${album.id}`}>
-      <div className="relative group cursor-pointer">
-        {album.image ? (
-          <img
-            src={album.image}
-            className="w-full h-40 object-cover rounded-lg"
-            alt={album.title}
-          />
-        ) : (
-          <div className="w-full h-40 rounded-lg bg-gray-200 flex items-center justify-center text-sm text-gray-500">
-            No Cover
-          </div>
-        )}
-
-        <div className="absolute inset-0 bg-blue bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition rounded-lg">
-          <span className="text-white font-bold text-lg">View Album</span>
+          {editSongId && (
+            <button
+              onClick={() => {
+                setEditSongId(null);
+                setSongForm({
+                  title: "",
+                  performers: "",
+                  year: "",
+                  singers: "",
+                  writers: "",
+                  length: "",
+                  albumId: "",
+                });
+              }}
+              className="bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+          )}
         </div>
       </div>
 
-      <h2 className="font-bold text-lg mt-3">{album.title}</h2>
-      <p className="text-sm text-gray-500 dark:text-gray-300">
-        {album.performers}
-      </p>
-      <p className="text-xs text-gray-400">
-        {album.year} • {album.songs.length} songs
-      </p>
-    </Link>
+      <div className="mb-4 flex gap-2">
+        <input
+          placeholder="Search..."
+          className="border p-2 w-full text-blue"
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-    {album.songs && album.songs.length > 0 && (
-      <div className="mt-3 border-t pt-2">
-        <p className="text-xs text-gray-400 mb-1">Songs:</p>
-        {album.songs.map((song: any) => (
-  <div key={song.id} className="flex items-center justify-between gap-2 mb-1">
-    <p className="text-sm">🎵 {song.title}</p>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="border p-2 rounded text-blue"
+        >
+          <option value="year-desc">Year: Newest</option>
+          <option value="year-asc">Year: Oldest</option>
+          <option value="title-asc">Title: A-Z</option>
+          <option value="title-desc">Title: Z-A</option>
+          <option value="performers-asc">Artist: A-Z</option>
+          <option value="performers-desc">Artist: Z-A</option>
+        </select>
+      </div>
 
-    <div className="flex gap-1">
-      <button
-        onClick={() => startSongEdit(song)}
-        className="text-xs bg-purple-500 text-white px-2 py-1 rounded"
-      >
-        Edit
-      </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+        {filtered.map((album) => (
+          <div
+            key={album.id}
+            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur p-4 rounded-3xl shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition duration-300"
+          >
+            <Link href={`/albums/${album.id}`}>
+              <div className="relative group cursor-pointer">
+                {album.image ? (
+                  <img
+                    src={album.image}
+                    className="w-full h-56 object-cover rounded-2xl"
+                    alt={album.title}
+                  />
+                ) : (
+                  <div className="w-full h-56 rounded-2xl bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-sm text-gray-500 dark:text-gray-300">
+                    No Cover
+                  </div>
+                )}
 
-      <button
-        onClick={() => deleteSong(song.id)}
-        className="text-xs bg-red-500 text-white px-2 py-1 rounded"
-      >
-        Delete
-      </button>
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition rounded-2xl">
+                  <span className="text-white font-bold text-lg">View Album</span>
+                </div>
+              </div>
+
+              <h2 className="font-bold text-lg mt-4 leading-tight">{album.title}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                  {album.performers}
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-400 mt-1">
+                  {album.year} • {album.songs.length} songs
+                </p>
+            </Link>
+
+            {album.songs && album.songs.length > 0 && (
+              <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-3">
+                <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">Songs</p>
+                {album.songs.map((song: any) => (
+                  <div key={song.id} className="flex items-center justify-between gap-2 mb-2 rounded-xl px-2 py-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                    <p className="text-sm">🎵 {song.title}</p>
+
+                    <div className="flex gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startSongEdit(song);
+                        }}
+                        className="text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg transition"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteSong(song.id);
+                        }}
+                        className="text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg transition"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex gap-2 mt-3">
+              <button
+                onClick={() => startEdit(album)}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl shadow-sm transition"
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={() => deleteAlbum(album.id)}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl shadow-sm transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
-))}
-      </div>
-    )}
-
-    <div className="flex gap-2 mt-3">
-      <button
-        onClick={() => startEdit(album)}
-        className="flex-1 bg-blue-500 text-white px-2 py-1 rounded"
-      >
-        Edit
-      </button>
-
-      <button
-        onClick={() => deleteAlbum(album.id)}
-        className="flex-1 bg-red-500 text-white px-2 py-1 rounded"
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-))}
-      </div>
-    </div>
-  );
+);
 }
