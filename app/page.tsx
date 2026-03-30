@@ -16,6 +16,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [dark, setDark] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState("year-desc");
 
   const fetchAlbums = async () => {
     try {
@@ -121,11 +122,30 @@ export default function Home() {
   setEditId(album.id);
 };
 
-  const filtered = albums.filter((s: any) =>
+  const filtered = albums
+  .filter((s: any) =>
     Object.values(s).some((v) =>
       String(v).toLowerCase().includes(search.toLowerCase())
     )
-  );
+  )
+  .sort((a: any, b: any) => {
+    switch (sortBy) {
+      case "year-desc":
+        return (Number(b.year) || 0) - (Number(a.year) || 0);
+      case "year-asc":
+        return (Number(a.year) || 0) - (Number(b.year) || 0);
+      case "title-asc":
+        return String(a.title || "").localeCompare(String(b.title || ""));
+      case "title-desc":
+        return String(b.title || "").localeCompare(String(a.title || ""));
+      case "performers-asc":
+        return String(a.performers || "").localeCompare(String(b.performers || ""));
+      case "performers-desc":
+        return String(b.performers || "").localeCompare(String(a.performers || ""));
+      default:
+        return 0;
+    }
+  });
 
   return (
     <div className={dark ? "bg-gray-900 text-white min-h-screen p-6" : "p-6"}>
@@ -225,11 +245,26 @@ export default function Home() {
         )}
       </div>
 
-      <input
-        placeholder="Search..."
-        className="border p-2 w-full mb-4 text-blue"
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="mb-4 flex gap-2">
+  <input
+    placeholder="Search..."
+    className="border p-2 w-full text-blue"
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+  <select
+    value={sortBy}
+    onChange={(e) => setSortBy(e.target.value)}
+    className="border p-2 rounded text-blue"
+  >
+    <option value="year-desc">Year: Newest</option>
+    <option value="year-asc">Year: Oldest</option>
+    <option value="title-asc">Title: A-Z</option>
+    <option value="title-desc">Title: Z-A</option>
+    <option value="performers-asc">Artist: A-Z</option>
+    <option value="performers-desc">Artist: Z-A</option>
+  </select>
+</div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {filtered.map((album) => (
