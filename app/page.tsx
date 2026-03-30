@@ -58,35 +58,37 @@ export default function Home() {
   };
 
   const saveAlbum = async () => {
-    const method = editId ? "PUT" : "POST";
+  const method = editId ? "PUT" : "POST";
+  const body = editId ? { id: editId, ...form } : form;
 
-    const body = editId ? { id: editId, ...form } : form;
+  // 👇 PUT IT HERE
+  console.log("Saving album with body:", body);
 
-    const res = await fetch("/api/albums", {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+  const res = await fetch("/api/albums", {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("Save failed:", text);
-      return;
-    }
+  if (!res.ok) {
+    const text = await res.text();
+    console.error("Save failed:", text);
+    return;
+  }
 
-    setForm({
-      title: "",
-      performers: "",
-      year: "",
-      singers: "",
-      writers: "",
-      length: "",
-      image: "",
-    });
+  setForm({
+    title: "",
+    performers: "",
+    year: "",
+    singers: "",
+    writers: "",
+    length: "",
+    image: "",
+  });
 
-    setEditId(null);
-    await fetchAlbums();
-  };
+  setEditId(null);
+  await fetchAlbums();
+};
     
  
   const deleteAlbum = async (id: string) => {
@@ -174,8 +176,14 @@ export default function Home() {
               });
 
               const data = await res.json();
+              console.log("UPLOAD RESPONSE:", data);
 
-              setForm({ ...form, image: data.url });
+              if (!res.ok) {
+                console.error("Upload failed:", data);
+                return;
+              }
+
+              setForm((prev) => ({ ...prev, image: data.url }));
             }}
           />
 
