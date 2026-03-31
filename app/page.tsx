@@ -227,7 +227,7 @@ const saveAlbum = async () => {
   
 
   return (
-  <div className={dark ? "bg-gray-900 text-white min-h-screen" : "bg-gray-100 min-h-screen"}>
+  <div className={dark ? "bg-blue-300 text-white min-h-screen" : "bg-gray-100 min-h-screen"}>
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">🔥🎶 My Album Catalog</h1>
 
