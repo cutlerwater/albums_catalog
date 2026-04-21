@@ -1,28 +1,8 @@
 @import "tailwindcss";
 
-<<<<<<< HEAD
 html,
 body {
   min-height: 100%;
-=======
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #696969;
-  }
->>>>>>> 5c26205d5d3076285f1cd43f30bff5690d2181ea
 }
 
 body {
