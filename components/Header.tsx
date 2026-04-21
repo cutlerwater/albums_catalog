@@ -9,7 +9,7 @@ export default function Header() {
                 <Link href="/" className="flex items-center gap-4">
                     <div className="relative h-18 w-60 sm:h-22 sm:w-70">
                         <Image
-                            src="/images/Cutlerwaterlogo.png"
+                            src="/public/images/Cutlerwaterlogo.png"
                             alt="Cutlerwater Album Catalog"
                             fill
                             className="object-contain drop-shadow-[0_10px_30px_rgba(255,180,0,0.15)] transition duration-300 group-hover:drop-shadow-[0_14px_40px_rgba(255,180,0,0.5)]"

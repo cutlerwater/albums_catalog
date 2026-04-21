@@ -58,7 +58,7 @@ export default function HomePage() {
           {/* 🔥 BIG HERO LOGO */}
           <div className="relative mb-10 h-40 w-[500px] max-w-full sm:h-48 sm:w-[600px]">
             <Image
-              src="/images/Cutlerwaterlogo.png"
+              src="/public/images/Cutlerwaterlogo.png"
               alt="Cutlerwater Album Catalog"
               fill
               className="object-contain drop-shadow-[0_20px_60px_rgba(255,180,0,0.45)]"
